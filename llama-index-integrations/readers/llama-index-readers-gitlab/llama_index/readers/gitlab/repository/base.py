@@ -52,6 +52,7 @@ class GitLabRepositoryReader(BaseReader):
         file_path: Optional[str] = None,
         path: Optional[str] = None,
         recursive: bool = False,
+        get_all: bool = False,
     ) -> List[Document]:
         """
         Load data from a GitLab repository.
@@ -74,6 +75,7 @@ class GitLabRepositoryReader(BaseReader):
             "ref": ref,
             "path": path,
             "recursive": recursive,
+            "get_all": get_all,
         }
 
         filtered_params = {k: v for k, v in params.items() if v is not None}
@@ -85,8 +87,7 @@ class GitLabRepositoryReader(BaseReader):
         for item in repo_items:
             if item["type"] == "blob":
                 document = self._load_single_file(item["path"], ref)
-
-            documents.append(document)
+                documents.append(document)
 
         return documents
 
